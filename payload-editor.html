@@ -96,13 +96,13 @@ Custom property | Description | Default
           <paper-item>File</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
-      <content-type-selector hidden$="[[_computeContentTypeSelectorHidden(openedEditor)]]" selected="{{contentType}}"></content-type-selector>
+      <content-type-selector hidden$="[[_computeContentTypeSelectorHidden(openedEditor)]]" content-type="{{contentType}}"></content-type-selector>
     </section>
     <iron-pages selected="{{openedEditor}}" selected-attribute="opened">
       <raw-payload-editor attr-for-opened="opened" value="{{value}}"></raw-payload-editor>
       <form-data-editor attr-for-opened="opened" value="{{value}}"></form-data-editor>
-      <multipart-payload-editor attr-for-opened="opened" value="{{multipart}}"></multipart-payload-editor>
-      <files-payload-editor attr-for-opened="opened" value="{{file}}"></files-payload-editor>
+      <multipart-payload-editor attr-for-opened="opened" value="{{value}}"></multipart-payload-editor>
+      <files-payload-editor attr-for-opened="opened" value="{{value}}"></files-payload-editor>
     </iron-pages>
   </template>
   <script>
