@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/test-helpers.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../payload-editor.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <payload-editor></payload-editor>
+      </template>
+    </test-fixture>
+
+    <script>
+    /* global sinon, fixture, assert */
+    suite('basic', function() {
+
+      suite('_editorChanged()', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('form-data-editor sets correct content type', function() {
+          element.openedEditor = 1;
+          assert.equal(element.contentType, 'application/x-www-form-urlencoded');
+        });
+
+        test('multipart-payload-editor sets correct content type', function() {
+          element.openedEditor = 2;
+          assert.equal(element.contentType, 'multipart/form-data');
+        });
+
+        test('Fires content-type-changed on tab change', function() {
+          var spy = sinon.stub();
+          element.addEventListener('content-type-changed', spy);
+          element.openedEditor = 1;
+          assert.isTrue(spy.called);
+        });
+
+        test('Fires send-analytics on tab change', function() {
+          var spy = sinon.stub();
+          element.addEventListener('send-analytics', spy);
+          element.openedEditor = 3;
+          assert.isTrue(spy.calledOnce);
+        });
+
+        test('editor has the opened attribute set', function() {
+          TestHelpers.forceXIfStamp(element);
+          var editor = Polymer.dom(element.root).querySelector('raw-payload-editor');
+          assert.isTrue(editor.hasAttribute('opened'));
+        });
+      });
+
+      suite('_computeContentTypeSelectorHidden()', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+
+        test('returns true for value 2', function() {
+          assert.isTrue(element._computeContentTypeSelectorHidden(2));
+        });
+
+        test('returns false for other values', function() {
+          assert.isFalse(element._computeContentTypeSelectorHidden(0));
+          assert.isFalse(element._computeContentTypeSelectorHidden(1));
+          assert.isFalse(element._computeContentTypeSelectorHidden(3));
+          assert.isFalse(element._computeContentTypeSelectorHidden(4));
+          assert.isFalse(element._computeContentTypeSelectorHidden(5));
+          assert.isFalse(element._computeContentTypeSelectorHidden(6));
+        });
+
+        test('3rd editor if multipart editor', function() {
+          var elm = Polymer.dom(element.root).querySelector('iron-pages>*:nth-child(3)');
+          assert.equal(elm.nodeName, 'MULTIPART-PAYLOAD-EDITOR');
+        });
+      });
+    });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,201 @@
+<!--
+@license
+Copyright 2016 The Advanced REST client authors <arc@mulesoft.com>
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License. You may obtain a copy of
+the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../raw-payload-editor/raw-payload-editor.html">
+<link rel="import" href="../form-data-editor/form-data-editor.html">
+<link rel="import" href="../multipart-payload-editor/multipart-payload-editor.html">
+<link rel="import" href="../files-payload-editor/files-payload-editor.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../content-type-selector/content-type-selector.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<!--
+An element that is responsible for displaying forms to prepare a request body.
+
+The element contains following editors that the user may use to provide the value:
+
+- [raw editor](https://github.com/advanced-rest-client/raw-payload-editor) - free text form editor with syntax highlighting, accepts any text value
+- [form editor](https://github.com/advanced-rest-client/form-data-editor) - `x-www-form-urlencoded` content type editor as a standard web form. Produces valid url-encoded output
+- [multipart editor](https://github.com/advanced-rest-client/multipart-payload-editor) - for mixed text fields and files
+- [file input](https://github.com/advanced-rest-client/files-payload-editor) - to send file as the body
+
+The `value` property of the element can have different type depending on selected editor. First two's
+value is type of `string`, multipart produces `FormData` object and file editor produces `File`
+object.
+
+### Example
+```
+<payload-editor value="{{body}}"></payload-editor>
+```
+
+Each time a value changes in one of child editors the `payload-value-changed` custom event is fired
+with a `value` property set on `detail` object. Intercepting the event prevents you from reading
+value of the element directly.
+
+### Styling
+`<payload-editor>` provides the following custom properties and mixins for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--payload-editor` | Mixin applied to the element | `{}`
+`--payload-editor-dropdown` | Mixin applied to dropdown menus in the header | `{}`
+`--payload-editor-options-panel` | Mixin applied to the container with dropdowns | `{}`
+`--payload-editor-dropdown-type` | Mixin applied to the dropdown that selects editor type | `{}`
+
+@group UI Elements
+@element payload-editor
+@demo demo/index.html
+-->
+<dom-module id="payload-editor">
+  <template>
+    <style>
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    .panel-options {
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+      @apply(--payload-editor-options-panel);
+    }
+
+    iron-pages {
+      padding: 12px;
+    }
+
+    paper-dropdown-menu {
+      margin-right: 12px;
+      @apply(--payload-editor-dropdown);
+    }
+
+    paper-dropdown-menu.type {
+      padding: 0 12px;
+      min-width: 320px;
+      @apply(--payload-editor-dropdown-type);
+    }
+    </style>
+    <section class="panel-options">
+      <paper-dropdown-menu class="type" label="Editor view">
+        <paper-listbox class="dropdown-content" selected="{{openedEditor}}">
+          <paper-item>Text input</paper-item>
+          <paper-item>Form data (text form)</paper-item>
+          <paper-item>Multipart form data (form with files)</paper-item>
+          <paper-item>File</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+      <content-type-selector hidden$="[[_computeContentTypeSelectorHidden(openedEditor)]]" selected="{{contentType}}"></content-type-selector>
+    </section>
+    <iron-pages selected="{{openedEditor}}" selected-attribute="opened">
+      <raw-payload-editor attr-for-opened="opened" value="{{value}}"></raw-payload-editor>
+      <form-data-editor attr-for-opened="opened" value="{{value}}"></form-data-editor>
+      <multipart-payload-editor attr-for-opened="opened" value="{{multipart}}"></multipart-payload-editor>
+      <files-payload-editor attr-for-opened="opened" value="{{file}}"></files-payload-editor>
+    </iron-pages>
+  </template>
+  <script>
+  Polymer({
+    is: 'payload-editor',
+    properties: {
+      /**
+       * A HTTP body.
+       *
+       * Depending of current editor selection the type can vary.
+       *
+       * @type {String|FormData|File}
+       */
+      value: {
+        type: String,
+        value: '',
+        notify: true
+      },
+      /**
+       * A value of a Content-Type header.
+       *
+       * @type {Stirng}
+       */
+      contentType: {
+        type: String
+      },
+      /**
+       * Currently selected editor.
+       *
+       * - 0 for Raw editor
+       * - 1 for Form data
+       * - 2 for Multipart
+       * - 3 for File
+       */
+      openedEditor: {
+        type: Number,
+        value: 0,
+        observer: '_editorChanged'
+      }
+    },
+
+    // Called when editor changed. Set's a content type if needed.
+    _editorChanged: function(selection) {
+      var tabName;
+      var ct = this.contentType;
+
+      switch (selection) {
+        case 0:
+          tabName = 'Raw tab';
+          break;
+        case 1:
+          if (ct !== 'application/x-www-form-urlencoded') {
+            this.setContenTypeValue('application/x-www-form-urlencoded');
+          }
+          tabName = 'Form tab';
+          break;
+        case 2:
+          if (!ct || !ct.indexOf || ct.indexOf('multipart/form-data') === -1) {
+            this.setContenTypeValue('multipart/form-data');
+          }
+          tabName = 'Files tab';
+          break;
+        case 3:
+          tabName = 'Raw file';
+          break;
+      }
+
+      if (this.isAttached) {
+        this.fire('send-analytics', {
+          type: 'event',
+          category: 'Payload editor',
+          action: 'Tab switched',
+          label: tabName
+        });
+      }
+    },
+
+    /**
+     * Updates Content-Type.
+     */
+    setContenTypeValue: function(ct) {
+      this.set('contentType', ct);
+      this.fire('content-type-changed', {
+        value: ct
+      });
+    },
+
+    _computeContentTypeSelectorHidden: function(tabSelected) {
+      if (tabSelected === 2) {
+        return true;
+      }
+      return false;
+    }
+  });
+  </script>
+</dom-module>
