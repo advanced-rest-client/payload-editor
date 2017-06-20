@@ -195,6 +195,22 @@ Custom property | Description | Default
         return true;
       }
       return false;
+    },
+    /**
+     * Refreshes current editor value if nescesary.
+     * It's important in case of CodeMirror wchich is working really bad if
+     * it's in a tabs or similar.
+     */
+    refresh: function() {
+      switch (this.openedEditor) {
+        case 0:
+          var node = this.$$('raw-payload-editor');
+          this.toggleAttribute('opened', false, node);
+          this.async(function() {
+            this.toggleAttribute('opened', true, node);
+          }, 1);
+          break;
+      }
     }
   });
   </script>
