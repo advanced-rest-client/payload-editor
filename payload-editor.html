@@ -12,6 +12,7 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../events-target-behavior/events-target-behavior.html">
 <link rel="import" href="../raw-payload-editor/raw-payload-editor.html">
 <link rel="import" href="../form-data-editor/form-data-editor.html">
 <link rel="import" href="../multipart-payload-editor/multipart-payload-editor.html">
@@ -88,15 +89,18 @@ Custom property | Description | Default
     }
     </style>
     <section class="panel-options">
-      <paper-dropdown-menu class="type" label="Editor view">
+      <content-type-selector>
+        <paper-item data-type="application/octet-stream">Any file data</paper-item>
+      </content-type-selector>
+      <paper-dropdown-menu class="type" label="Editor view" hidden$="[[editorSelectorHidden]]">
         <paper-listbox class="dropdown-content" selected="{{openedEditor}}">
-          <paper-item>Text input</paper-item>
-          <paper-item>Form data (text form)</paper-item>
-          <paper-item>Multipart form data (form with files)</paper-item>
-          <paper-item>File</paper-item>
+          <paper-item hidden$="[[noTextInput]]">Text input</paper-item>
+          <paper-item hidden$="[[noFormData]]">Form data (text form)</paper-item>
+          <paper-item hidden$="[[noMultipart]]">Multipart form data (form with files)</paper-item>
+          <paper-item hidden$="[[noFile]]">File</paper-item>
+          <paper-item hidden$="[[noJsonEditor]]">JSON editor</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
-      <content-type-selector hidden$="[[_computeContentTypeSelectorHidden(openedEditor)]]" content-type="{{contentType}}"></content-type-selector>
     </section>
     <iron-pages selected="{{openedEditor}}" selected-attribute="opened">
       <raw-payload-editor attr-for-opened="opened" value="{{value}}"></raw-payload-editor>
@@ -108,6 +112,7 @@ Custom property | Description | Default
   <script>
   Polymer({
     is: 'payload-editor',
+    behaviors: [ArcBehaviors.EventsTargetBehavior],
     properties: {
       /**
        * A HTTP body.
@@ -119,7 +124,8 @@ Custom property | Description | Default
       value: {
         type: String,
         value: '',
-        notify: true
+        notify: true,
+        observer: '_valueChangeHandler'
       },
       /**
        * A value of a Content-Type header.
@@ -141,6 +147,98 @@ Custom property | Description | Default
         type: Number,
         value: 0,
         observer: '_editorChanged'
+      },
+      // Computed value, if set then raw text input is hidden
+      noTextInput: Boolean,
+      // Computed value, if set then form data input is hidden
+      noFormData: Boolean,
+      // Computed value, if set then multipart input is hidden
+      noMultipart: Boolean,
+      // Computed value, if set then file input is hidden
+      noFile: Boolean,
+      // Computed value, if set then the JSON editor is hidden
+      noJsonEditor: Boolean,
+      // Computed value, true if the editor type selector is hidden.
+      editorSelectorHidden: {
+        type: Boolean,
+        readOnly: true
+      }
+    },
+
+    observers: [
+      '_contentTypeChanged(contentType, value)',
+      '_computeEditorSelectorHidden(contentType, value)'
+    ],
+
+    _attachListeners: function(node) {
+      this.listen(node, 'content-type-changed', '_contentTypeHandler');
+    },
+
+    _detachListeners: function(node) {
+      this.unlisten(node, 'content-type-changed', '_contentTypeHandler');
+    },
+
+    _hideAllInputsOptions: function() {
+      this.noTextInput = true;
+      this.noFormData = true;
+      this.noMultipart = true;
+      this.noFile = true;
+      this.noJsonEditor = true;
+    },
+
+    _showAllInputsOptions: function() {
+      this.noTextInput = false;
+      this.noFormData = false;
+      this.noMultipart = false;
+      this.noFile = false;
+      this.noJsonEditor = false;
+    },
+
+    _contentTypeChanged: function(contentType, value) {
+      if (!contentType) {
+        this._showAllInputsOptions();
+        return;
+      }
+      this._hideAllInputsOptions();
+      if (contentType.indexOf('multipart') === 0 || value instanceof FormData) {
+        this.noMultipart = false;
+        this.openedEditor = 2;
+        return;
+      }
+      if (contentType === 'application/octet-stream' || value instanceof Blob) {
+        this.noFile = false;
+        this.openedEditor = 3;
+        return;
+      }
+      if (contentType.indexOf('json') !== -1) {
+        this.noTextInput = false;
+        this.noJsonEditor = false;
+        this.openedEditor = 0;
+        return;
+      }
+      if (contentType === 'application/x-www-form-urlencoded') {
+        this.noTextInput = false;
+        this.noFormData = false;
+        this.openedEditor = 1;
+        return;
+      }
+    },
+
+    /**
+     * If the event comes from different source then this element then it will
+     * update `content-type` value.
+     */
+    _contentTypeHandler: function(e) {
+      if (e.defaultPrevented) {
+        return;
+      }
+      var event = Polymer.dom(e);
+      if (event.rootTarget === this) {
+        return;
+      }
+      var ct = e.detail.value;
+      if (ct !== this.contentType) {
+        this.set('contentType', ct);
       }
     },
 
@@ -180,6 +278,17 @@ Custom property | Description | Default
       }
     },
 
+    _valueChangeHandler: function(value, oldValue) {
+      if (oldValue === undefined) {
+        return;
+      }
+      if (value === undefined) {
+        var ct = this.contentType;
+        this._contentTypeChanged(ct, value);
+        this._computeEditorSelectorHidden(ct, value);
+      }
+    },
+
     /**
      * Updates Content-Type.
      */
@@ -188,13 +297,6 @@ Custom property | Description | Default
       this.fire('content-type-changed', {
         value: ct
       });
-    },
-
-    _computeContentTypeSelectorHidden: function(tabSelected) {
-      if (tabSelected === 2) {
-        return true;
-      }
-      return false;
     },
     /**
      * Refreshes current editor value if nescesary.
@@ -211,6 +313,27 @@ Custom property | Description | Default
           }, 1);
           break;
       }
+    },
+    /**
+     * Computes a value of the hidden attribute of the editory type selector.
+     * Some content types are supported by only one type of the editor so in
+     * this cases the editor should be hidden.
+     *
+     * @param {String} contentType Current content type.
+     * @return {Boolean} true to hide the selector.
+     */
+    _computeEditorSelectorHidden: function(contentType, value) {
+      var result;
+      if (!contentType) {
+        result = true;
+      } else if (contentType.indexOf('multipart') === 0 || value instanceof FormData) {
+        result = true;
+      } else if (contentType === 'application/octet-stream' || value instanceof Blob) {
+        result = true;
+      } else {
+        result = false;
+      }
+      this._setEditorSelectorHidden(result);
     }
   });
   </script>
