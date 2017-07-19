@@ -21,6 +21,7 @@ the License.
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../content-type-selector/content-type-selector.html">
+<link rel="import" href="../body-json-editor/body-json-editor.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <!--
 An element that is responsible for displaying forms to prepare a request body.
@@ -107,6 +108,7 @@ Custom property | Description | Default
       <form-data-editor attr-for-opened="opened" value="{{value}}"></form-data-editor>
       <multipart-payload-editor attr-for-opened="opened" value="{{value}}"></multipart-payload-editor>
       <files-payload-editor attr-for-opened="opened" value="{{value}}"></files-payload-editor>
+      <body-json-editor attr-for-opened="opened" value="{{value}}"></body-json-editor>
     </iron-pages>
   </template>
   <script>
@@ -167,7 +169,7 @@ Custom property | Description | Default
 
     observers: [
       '_contentTypeChanged(contentType, value)',
-      '_computeEditorSelectorHidden(contentType, value)'
+      '_computeEditorSelectorHidden(contentType)'
     ],
 
     _attachListeners: function(node) {
@@ -222,6 +224,9 @@ Custom property | Description | Default
         this.openedEditor = 1;
         return;
       }
+
+      this.noTextInput = false;
+      this.openedEditor = 0;
     },
 
     /**
@@ -239,6 +244,9 @@ Custom property | Description | Default
       var ct = e.detail.value;
       if (ct !== this.contentType) {
         this.set('contentType', ct);
+        if (this.value === undefined) {
+          this._contentTypeChanged(ct);
+        }
       }
     },
 
@@ -285,7 +293,6 @@ Custom property | Description | Default
       if (value === undefined) {
         var ct = this.contentType;
         this._contentTypeChanged(ct, value);
-        this._computeEditorSelectorHidden(ct, value);
       }
     },
 
@@ -322,16 +329,18 @@ Custom property | Description | Default
      * @param {String} contentType Current content type.
      * @return {Boolean} true to hide the selector.
      */
-    _computeEditorSelectorHidden: function(contentType, value) {
+    _computeEditorSelectorHidden: function(contentType) {
       var result;
       if (!contentType) {
-        result = true;
-      } else if (contentType.indexOf('multipart') === 0 || value instanceof FormData) {
-        result = true;
-      } else if (contentType === 'application/octet-stream' || value instanceof Blob) {
-        result = true;
-      } else {
         result = false;
+      } else if (contentType.indexOf('json') !== -1) {
+        result = false;
+      } else if (contentType.indexOf('x-www-form-urlencoded') !== -1) {
+        result = false;
+      } else if (contentType === 'application/base64') {
+        result = false;
+      } else {
+        result = true;
       }
       this._setEditorSelectorHidden(result);
     }
