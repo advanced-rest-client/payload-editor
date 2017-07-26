@@ -1,0 +1,253 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/test-helpers.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../payload-editor.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <payload-editor></payload-editor>
+      </template>
+    </test-fixture>
+
+    <script>
+    /* global fixture, assert */
+    suite('Editors hidding', function() {
+      suite('Default state', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+        test('noTextInput is undefined', function() {
+          assert.isUndefined(element.noTextInput);
+        });
+
+        test('noFormData is undefined', function() {
+          assert.isUndefined(element.noFormData);
+        });
+
+        test('noMultipart is undefined', function() {
+          assert.isUndefined(element.noMultipart);
+        });
+
+        test('noFile is undefined', function() {
+          assert.isUndefined(element.noFile);
+        });
+
+        test('noJsonEditor is undefined', function() {
+          assert.isUndefined(element.noJsonEditor);
+        });
+      });
+
+      suite('multipart/form-data content type', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.contentType = 'multipart/form-data';
+        });
+        test('noTextInput is true', function() {
+          assert.isTrue(element.noTextInput);
+        });
+
+        test('noFormData is true', function() {
+          assert.isTrue(element.noFormData);
+        });
+
+        test('noMultipart is false', function() {
+          assert.isFalse(element.noMultipart);
+        });
+
+        test('noFile is true', function() {
+          assert.isTrue(element.noFile);
+        });
+
+        test('noJsonEditor is true', function() {
+          assert.isTrue(element.noJsonEditor);
+        });
+      });
+
+      suite('application/octet-stream content type', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.contentType = 'application/octet-stream';
+        });
+        test('noTextInput is true', function() {
+          assert.isTrue(element.noTextInput);
+        });
+
+        test('noFormData is true', function() {
+          assert.isTrue(element.noFormData);
+        });
+
+        test('noMultipart is true', function() {
+          assert.isTrue(element.noMultipart);
+        });
+
+        test('noFile is false', function() {
+          assert.isFalse(element.noFile);
+        });
+
+        test('noJsonEditor is true', function() {
+          assert.isTrue(element.noJsonEditor);
+        });
+      });
+
+      suite('application/json content type', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.contentType = 'application/json';
+        });
+        test('noTextInput is false', function() {
+          assert.isFalse(element.noTextInput);
+        });
+
+        test('noFormData is true', function() {
+          assert.isTrue(element.noFormData);
+        });
+
+        test('noMultipart is true', function() {
+          assert.isTrue(element.noMultipart);
+        });
+
+        test('noFile is true', function() {
+          assert.isTrue(element.noFile);
+        });
+
+        test('noJsonEditor is false', function() {
+          assert.isFalse(element.noJsonEditor);
+        });
+      });
+
+      suite('application/x-www-form-urlencoded content type', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.contentType = 'application/x-www-form-urlencoded';
+        });
+        test('noTextInput is false', function() {
+          assert.isFalse(element.noTextInput);
+        });
+
+        test('noFormData is false', function() {
+          assert.isFalse(element.noFormData);
+        });
+
+        test('noMultipart is true', function() {
+          assert.isTrue(element.noMultipart);
+        });
+
+        test('noFile is true', function() {
+          assert.isTrue(element.noFile);
+        });
+
+        test('noJsonEditor is true', function() {
+          assert.isTrue(element.noJsonEditor);
+        });
+      });
+
+      suite('Any content type', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.contentType = 'x-test';
+        });
+        test('noTextInput is false', function() {
+          assert.isFalse(element.noTextInput);
+        });
+
+        test('noFormData is true', function() {
+          assert.isTrue(element.noFormData);
+        });
+
+        test('noMultipart is true', function() {
+          assert.isTrue(element.noMultipart);
+        });
+
+        test('noFile is true', function() {
+          assert.isTrue(element.noFile);
+        });
+
+        test('noJsonEditor is true', function() {
+          assert.isTrue(element.noJsonEditor);
+        });
+      });
+
+      suite('FormData is the value', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.value = new FormData();
+          element.contentType = 'application/x-www-form-urlencoded';
+        });
+        test('noTextInput is true', function() {
+          assert.isTrue(element.noTextInput);
+        });
+
+        test('noFormData is true', function() {
+          assert.isTrue(element.noFormData);
+        });
+
+        test('noMultipart is false', function() {
+          assert.isFalse(element.noMultipart);
+        });
+
+        test('noFile is true', function() {
+          assert.isTrue(element.noFile);
+        });
+
+        test('noJsonEditor is true', function() {
+          assert.isTrue(element.noJsonEditor);
+        });
+      });
+
+      suite('File is the value', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+          element.value = new Blob(['test']);
+          element.contentType = 'application/json';
+        });
+        test('noTextInput is true', function() {
+          assert.isTrue(element.noTextInput);
+        });
+
+        test('noFormData is true', function() {
+          assert.isTrue(element.noFormData);
+        });
+
+        test('noMultipart is true', function() {
+          assert.isTrue(element.noMultipart);
+        });
+
+        test('noFile is false', function() {
+          assert.isFalse(element.noFile);
+        });
+
+        test('noJsonEditor is true', function() {
+          assert.isTrue(element.noJsonEditor);
+        });
+      });
+    });
+    </script>
+
+  </body>
+</html>
