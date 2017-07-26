@@ -104,7 +104,7 @@ Custom property | Description | Default
       <form-data-editor attr-for-opened="opened" value="{{value}}"></form-data-editor>
       <multipart-payload-editor attr-for-opened="opened" value="{{value}}"></multipart-payload-editor>
       <files-payload-editor attr-for-opened="opened" value="{{value}}"></files-payload-editor>
-      <body-json-editor attr-for-opened="opened" value="{{value}}"></body-json-editor>
+      <body-json-editor raml-type="[[ramlType]]" attr-for-opened="opened" value="{{value}}"></body-json-editor>
     </iron-pages>
   </template>
   <script>
@@ -159,7 +159,12 @@ Custom property | Description | Default
       editorSelectorHidden: {
         type: Boolean,
         readOnly: true
-      }
+      },
+      /**
+       * A JavaScript representation of RAML data type object.
+       * It will be passed to the editors that support RAML types.
+       */
+      ramlType: Object
     },
 
     observers: [
