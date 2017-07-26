@@ -1,3 +1,13 @@
+<a name="0.2.2"></a>
+## [0.2.2](https://github.com/advanced-rest-client/payload-editor/compare/0.2.1...0.2.2) (2017-07-26)
+
+
+### New
+
+* Added support for RAML types. ([79ee2eedb6397f492e1b6b3634cea1102dda8830](https://github.com/advanced-rest-client/payload-editor/commit/79ee2eedb6397f492e1b6b3634cea1102dda8830))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/advanced-rest-client/payload-editor/compare/0.1.3...0.2.1) (2017-07-26)
 
