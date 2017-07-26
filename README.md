@@ -10,10 +10,10 @@ The element contains following editors that the user may use to provide the valu
 - [form editor](https://github.com/advanced-rest-client/form-data-editor) - `x-www-form-urlencoded` content type editor as a standard web form. Produces valid url-encoded output
 - [multipart editor](https://github.com/advanced-rest-client/multipart-payload-editor) - for mixed text fields and files
 - [file input](https://github.com/advanced-rest-client/files-payload-editor) - to send file as the body
+- [body-json-editor](https://github.com/advanced-rest-client/body-json-editor) - JSON editor in form
 
-The `value` property of the element can have different type depending on selected editor. First two's
-value is type of `string`, multipart produces `FormData` object and file editor produces `File`
-object.
+The `value` property can have different type depending on selected editor.
+Raw, form and JSON editors produces `string` value. Multipart produces `FormData` object and file editor produces `File` object.
 
 ### Example
 ```
