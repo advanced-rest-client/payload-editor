@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </test-fixture>
 
     <script>
-    /* global sinon, fixture, assert */
+    /* global sinon, fixture, assert, TestHelpers */
     suite('basic', function() {
 
       suite('_editorChanged()', function() {
@@ -65,31 +65,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           TestHelpers.forceXIfStamp(element);
           var editor = Polymer.dom(element.root).querySelector('raw-payload-editor');
           assert.isTrue(editor.hasAttribute('opened'));
-        });
-      });
-
-      suite('_computeContentTypeSelectorHidden()', function() {
-        var element;
-        setup(function() {
-          element = fixture('basic');
-        });
-
-        test('returns true for value 2', function() {
-          assert.isTrue(element._computeContentTypeSelectorHidden(2));
-        });
-
-        test('returns false for other values', function() {
-          assert.isFalse(element._computeContentTypeSelectorHidden(0));
-          assert.isFalse(element._computeContentTypeSelectorHidden(1));
-          assert.isFalse(element._computeContentTypeSelectorHidden(3));
-          assert.isFalse(element._computeContentTypeSelectorHidden(4));
-          assert.isFalse(element._computeContentTypeSelectorHidden(5));
-          assert.isFalse(element._computeContentTypeSelectorHidden(6));
-        });
-
-        test('3rd editor if multipart editor', function() {
-          var elm = Polymer.dom(element.root).querySelector('iron-pages>*:nth-child(3)');
-          assert.equal(elm.nodeName, 'MULTIPART-PAYLOAD-EDITOR');
         });
       });
     });
