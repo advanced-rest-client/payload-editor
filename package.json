@@ -1,6 +1,6 @@
 {
   "name": "payload-editor",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "license": "Apache-2.0 OR CC-BY-4.0",
   "description": "An element that is responsible for displaying forms to prepare a request body",
   "devDependencies": {
