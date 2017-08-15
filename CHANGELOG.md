@@ -1,3 +1,13 @@
+<a name="0.2.4"></a>
+## [0.2.4](https://github.com/advanced-rest-client/payload-editor/compare/0.2.3...0.2.4) (2017-08-15)
+
+
+### Update
+
+* Udpating version of a dependency ([5bcd652ff9a2cd94bfd2c6735e07f1dd7cb3de21](https://github.com/advanced-rest-client/payload-editor/commit/5bcd652ff9a2cd94bfd2c6735e07f1dd7cb3de21))
+
+
+
 <a name="0.2.3"></a>
 ## [0.2.3](https://github.com/advanced-rest-client/payload-editor/compare/0.2.2...0.2.3) (2017-08-15)
 
