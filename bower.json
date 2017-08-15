@@ -22,7 +22,7 @@
     "polymer": "Polymer/polymer#^1.9.2",
     "raw-payload-editor": "advanced-rest-client/raw-payload-editor#^0.1.1",
     "form-data-editor": "advanced-rest-client/form-data-editor#^0.2.0",
-    "multipart-payload-editor": "advanced-rest-client/multipart-payload-editor#^0.1.1",
+    "multipart-payload-editor": "advanced-rest-client/multipart-payload-editor#^0.2.1",
     "files-payload-editor": "advanced-rest-client/files-payload-editor",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.1",
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.3",
