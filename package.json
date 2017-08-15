@@ -4,6 +4,7 @@
   "license": "Apache-2.0 OR CC-BY-4.0",
   "description": "An element that is responsible for displaying forms to prepare a request body",
   "devDependencies": {
+    "bower": "^1.8.0",
     "polymer-cli": "^1.2.0"
   },
   "engines": {
