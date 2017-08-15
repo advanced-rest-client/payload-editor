@@ -1,3 +1,14 @@
+<a name="0.2.3"></a>
+## [0.2.3](https://github.com/advanced-rest-client/payload-editor/compare/0.2.2...0.2.3) (2017-08-15)
+
+
+### Update
+
+* Updated travis configuration ([06e935c0289b2b301d614647b936842ebc37054e](https://github.com/advanced-rest-client/payload-editor/commit/06e935c0289b2b301d614647b936842ebc37054e))
+* updating version opf the editor ([f377e6cb6a54238da1e9bb81693ea0af3e7268fe](https://github.com/advanced-rest-client/payload-editor/commit/f377e6cb6a54238da1e9bb81693ea0af3e7268fe))
+
+
+
 <a name="0.2.2"></a>
 ## [0.2.2](https://github.com/advanced-rest-client/payload-editor/compare/0.2.1...0.2.2) (2017-07-26)
 
