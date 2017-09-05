@@ -130,7 +130,8 @@ Custom property | Description | Default
        * @type {Stirng}
        */
       contentType: {
-        type: String
+        type: String,
+        observer: '_contentTypeChanged'
       },
       /**
        * Currently selected editor.
@@ -168,7 +169,6 @@ Custom property | Description | Default
     },
 
     observers: [
-      '_contentTypeChanged(contentType)',
       '_computeEditorSelectorHidden(contentType)'
     ],
 
@@ -196,17 +196,20 @@ Custom property | Description | Default
       this.noJsonEditor = false;
     },
 
-    _contentTypeChanged: function(contentType) {
+    _contentTypeChanged: function(contentType, oldValue) {
       if (!contentType) {
         this._showAllInputsOptions();
         return;
       }
       var value = this.value;
       this._hideAllInputsOptions();
-      if (contentType.indexOf('multipart/form-data') === 0 || value instanceof FormData) {
+      if (contentType.indexOf('multipart/form-data') === 0) {
         this.noMultipart = false;
         this.openedEditor = 2;
         return;
+      }
+      if (oldValue && oldValue.indexOf('multipart/form-data') === 0) {
+        this.value = '';
       }
       if (contentType === 'application/octet-stream' || value instanceof Blob) {
         this.noFile = false;
