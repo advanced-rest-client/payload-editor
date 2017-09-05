@@ -1,3 +1,17 @@
+<a name="0.2.6"></a>
+## [0.2.6](https://github.com/advanced-rest-client/payload-editor/compare/0.2.5...0.2.6) (2017-09-05)
+
+
+### Fix
+
+* Fixing a test for the FormData ([708a406f6a5daebf150696e64d5b6300f08a6cc9](https://github.com/advanced-rest-client/payload-editor/commit/708a406f6a5daebf150696e64d5b6300f08a6cc9))
+
+### Update
+
+* The element will now compute editors state property for FormData ([d5c1b714b71302d98821de0d6dd64404c0ad4256](https://github.com/advanced-rest-client/payload-editor/commit/d5c1b714b71302d98821de0d6dd64404c0ad4256))
+
+
+
 <a name="0.2.5"></a>
 ## [0.2.5](https://github.com/advanced-rest-client/payload-editor/compare/0.2.4...0.2.5) (2017-08-15)
 
