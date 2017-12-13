@@ -95,11 +95,11 @@ Custom property | Description | Default
       </content-type-selector>
       <paper-dropdown-menu class="type" label="Editor view" hidden$="[[editorSelectorHidden]]">
         <paper-listbox class="dropdown-content" selected="{{openedEditor}}">
-          <paper-item hidden$="[[noTextInput]]">Text input</paper-item>
-          <paper-item hidden$="[[noFormData]]">Form data (text form)</paper-item>
-          <paper-item hidden$="[[noMultipart]]">Multipart form data (form with files)</paper-item>
-          <paper-item hidden$="[[noFile]]">File</paper-item>
-          <paper-item hidden$="[[noJsonEditor]]">JSON editor</paper-item>
+          <paper-item hidden$="[[noTextInput]]">Raw input</paper-item>
+          <paper-item hidden$="[[noFormData]]">Form data (www-url-form-encoded)</paper-item>
+          <paper-item hidden$="[[noMultipart]]">Multipart form data (multipart/form-data)</paper-item>
+          <paper-item hidden$="[[noFile]]">Single file</paper-item>
+          <paper-item hidden$="[[noJsonEditor]]">JSON visual editor</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
     </section>
