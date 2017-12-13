@@ -1,3 +1,14 @@
+<a name="0.2.8"></a>
+## [0.2.8](https://github.com/advanced-rest-client/payload-editor/compare/0.2.6...0.2.8) (2017-12-13)
+
+
+### Update
+
+* Adding hidden class definition ([24b73f89a4a38bfce048e0f8c2bf904de77dc436](https://github.com/advanced-rest-client/payload-editor/commit/24b73f89a4a38bfce048e0f8c2bf904de77dc436))
+* Updated labels in dropdown menu ([8b34ce5b9cff949a2f212cdb9d39f5338763cf75](https://github.com/advanced-rest-client/payload-editor/commit/8b34ce5b9cff949a2f212cdb9d39f5338763cf75))
+
+
+
 <a name="0.2.7"></a>
 ## [0.2.7](https://github.com/advanced-rest-client/payload-editor/compare/0.2.6...0.2.7) (2017-09-05)
 
