@@ -1,3 +1,14 @@
+<a name="0.2.9"></a>
+## [0.2.9](https://github.com/advanced-rest-client/payload-editor/compare/0.2.8...0.2.9) (2017-12-14)
+
+
+### Update
+
+* Adding events target propagation to the raw payload editor ([5d21d48abcb0a8ab2e3150cdb3e3b7e74dbda208](https://github.com/advanced-rest-client/payload-editor/commit/5d21d48abcb0a8ab2e3150cdb3e3b7e74dbda208))
+* Updated tests configuration. ([be8871108dcf651c36d4d875671a9d6d5785b709](https://github.com/advanced-rest-client/payload-editor/commit/be8871108dcf651c36d4d875671a9d6d5785b709))
+
+
+
 <a name="0.2.8"></a>
 ## [0.2.8](https://github.com/advanced-rest-client/payload-editor/compare/0.2.6...0.2.8) (2017-12-13)
 
