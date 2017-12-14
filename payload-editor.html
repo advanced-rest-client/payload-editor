@@ -104,7 +104,7 @@ Custom property | Description | Default
       </paper-dropdown-menu>
     </section>
     <iron-pages selected="{{openedEditor}}" selected-attribute="opened">
-      <raw-payload-editor attr-for-opened="opened" value="{{value}}"></raw-payload-editor>
+      <raw-payload-editor attr-for-opened="opened" value="{{value}}" events-target="[[eventsTarget]]"></raw-payload-editor>
       <form-data-editor attr-for-opened="opened" value="{{value}}"></form-data-editor>
       <multipart-payload-editor attr-for-opened="opened" value="{{value}}"></multipart-payload-editor>
       <files-payload-editor attr-for-opened="opened" value="{{value}}"></files-payload-editor>
