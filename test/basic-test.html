@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </test-fixture>
 
     <script>
-    /* global sinon, fixture, assert, TestHelpers */
+    /* global sinon, fixture, assert, TestHelpers, MockInteractions */
     suite('basic', function() {
 
       suite('_editorChanged()', function() {
@@ -65,6 +65,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           TestHelpers.forceXIfStamp(element);
           var editor = Polymer.dom(element.root).querySelector('raw-payload-editor');
           assert.isTrue(editor.hasAttribute('opened'));
+        });
+      });
+
+      suite('Events', function() {
+        var element;
+        setup(function() {
+          element = fixture('basic');
+        });
+        test('Fires send-request custom event', function() {
+          var spy = sinon.stub();
+          element.addEventListener('send-request', spy);
+          var target = element.$$('raw-payload-editor');
+          MockInteractions.keyEventOn(target, 'keydown', 13, ['meta', 'ctrl'], 'Enter');
+          assert.isTrue(spy.called);
         });
       });
     });
