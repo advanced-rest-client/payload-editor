@@ -1,3 +1,13 @@
+<a name="0.2.10"></a>
+## [0.2.10](https://github.com/advanced-rest-client/payload-editor/compare/0.2.9...0.2.10) (2017-12-15)
+
+
+### New
+
+* Adding event notification to send a request as suggested in https://github.com/advanced-rest-client/arc-electron/issues/18 ([dfd0f5b9e83e695f3291114f5a2816fe8aa683a8](https://github.com/advanced-rest-client/payload-editor/commit/dfd0f5b9e83e695f3291114f5a2816fe8aa683a8))
+
+
+
 <a name="0.2.9"></a>
 ## [0.2.9](https://github.com/advanced-rest-client/payload-editor/compare/0.2.8...0.2.9) (2017-12-14)
 
