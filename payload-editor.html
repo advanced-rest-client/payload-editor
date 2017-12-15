@@ -176,6 +176,10 @@ Custom property | Description | Default
       '_computeEditorSelectorHidden(contentType)'
     ],
 
+    listeners: {
+      keydown: '_payloadKeyDown'
+    },
+
     _attachListeners: function(node) {
       this.listen(node, 'content-type-changed', '_contentTypeHandler');
     },
@@ -345,7 +349,29 @@ Custom property | Description | Default
         result = true;
       }
       this._setEditorSelectorHidden(result);
+    },
+
+    _payloadKeyDown: function(e) {
+      if (e.key !== 'Enter') {
+        return;
+      }
+      var actionKey = navigator.platform === 'MacIntel' ? 'metaKey' : 'ctrlKey';
+      if (!e[actionKey]) {
+        return;
+      }
+      this.fire('send-request', {}, {
+        cancelable: true
+      });
     }
+
+    /**
+     * Dispatched when the user enters combination of CTRL+Enter on Windows / Linux
+     * or CMD+Enter on Mac.
+     * The application should send current data to an endpoint.
+     * The event is cancelable.
+     *
+     * @event send-request
+     */
   });
   </script>
 </dom-module>
