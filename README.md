@@ -34,3 +34,9 @@ Custom property | Description | Default
 `--payload-editor-options-panel` | Mixin applied to the container with dropdowns | `{}`
 `--payload-editor-dropdown-type` | Mixin applied to the dropdown that selects editor type | `{}`
 
+
+
+### Events
+| Name | Description | Params |
+| --- | --- | --- |
+| send-request | Dispatched when the user enters combination of CTRL+Enter on Windows / Linux or CMD+Enter on Mac. The application should send current data to an endpoint. The event is cancelable. | __none__ |
