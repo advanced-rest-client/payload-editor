@@ -40,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       test('Is visible for JSON data', function() {
         element.contentType = 'application/json';
-        assert.isFalse(element.editorSelectorHidden);
+        assert.isTrue(element.editorSelectorHidden);
       });
 
       test('Is visible for x-www-form-urlencoded data', function() {

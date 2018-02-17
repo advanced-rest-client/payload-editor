@@ -29,8 +29,7 @@
     "paper-item": "PolymerElements/paper-item#^1.2.2",
     "content-type-selector": "advanced-rest-client/content-type-selector#^0.1.1",
     "iron-pages": "advanced-rest-client/PolymerElements/iron-pages#^1.0.9",
-    "events-target-behavior": "advanced-rest-client/events-target-behavior#^0.1.1",
-    "body-json-editor": "advanced-rest-client/body-json-editor#^0.2.0"
+    "events-target-behavior": "advanced-rest-client/events-target-behavior#^0.1.1"
   },
   "devDependencies": {
     "iron-component-page": "polymerelements/iron-component-page#1.0.0",
