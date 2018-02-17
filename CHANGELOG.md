@@ -1,3 +1,13 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/advanced-rest-client/payload-editor/compare/0.2.11...0.3.1) (2018-02-17)
+
+
+### Breaking
+
+* Removed visual JSON editor ([d2ffa2fccc853a02222b946b21ce2d053da6f221](https://github.com/advanced-rest-client/payload-editor/commit/d2ffa2fccc853a02222b946b21ce2d053da6f221))
+
+
+
 <a name="0.2.11"></a>
 ## [0.2.11](https://github.com/advanced-rest-client/payload-editor/compare/0.2.10...0.2.11) (2017-12-15)
 

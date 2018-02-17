@@ -21,7 +21,6 @@ the License.
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../content-type-selector/content-type-selector.html">
-<link rel="import" href="../body-json-editor/body-json-editor.html">
 <link rel="import" href="../iron-pages/iron-pages.html">
 <!--
 An element that is responsible for displaying forms to prepare a request body.
@@ -99,7 +98,6 @@ Custom property | Description | Default
           <paper-item hidden$="[[noFormData]]">Form data (www-url-form-encoded)</paper-item>
           <paper-item hidden$="[[noMultipart]]">Multipart form data (multipart/form-data)</paper-item>
           <paper-item hidden$="[[noFile]]">Single file</paper-item>
-          <paper-item hidden$="[[noJsonEditor]]">JSON visual editor</paper-item>
         </paper-listbox>
       </paper-dropdown-menu>
     </section>
@@ -108,7 +106,6 @@ Custom property | Description | Default
       <form-data-editor attr-for-opened="opened" value="{{value}}"></form-data-editor>
       <multipart-payload-editor attr-for-opened="opened" value="{{value}}"></multipart-payload-editor>
       <files-payload-editor attr-for-opened="opened" value="{{value}}"></files-payload-editor>
-      <body-json-editor raml-type="[[ramlType]]" attr-for-opened="opened" value="{{value}}"></body-json-editor>
     </iron-pages>
   </template>
   <script>
@@ -158,8 +155,6 @@ Custom property | Description | Default
       noMultipart: Boolean,
       // Computed value, if set then file input is hidden
       noFile: Boolean,
-      // Computed value, if set then the JSON editor is hidden
-      noJsonEditor: Boolean,
       // Computed value, true if the editor type selector is hidden.
       editorSelectorHidden: {
         type: Boolean,
@@ -193,7 +188,6 @@ Custom property | Description | Default
       this.noFormData = true;
       this.noMultipart = true;
       this.noFile = true;
-      this.noJsonEditor = true;
     },
 
     _showAllInputsOptions: function() {
@@ -201,7 +195,6 @@ Custom property | Description | Default
       this.noFormData = false;
       this.noMultipart = false;
       this.noFile = false;
-      this.noJsonEditor = false;
     },
 
     _contentTypeChanged: function(contentType, oldValue) {
@@ -226,7 +219,6 @@ Custom property | Description | Default
       }
       if (contentType.indexOf('json') !== -1) {
         this.noTextInput = false;
-        this.noJsonEditor = false;
         this.openedEditor = 0;
         return;
       }
@@ -342,7 +334,7 @@ Custom property | Description | Default
       } else if (value instanceof Blob) {
         result = true;
       } else if (contentType.indexOf('json') !== -1) {
-        result = false;
+        result = true;
       } else if (contentType.indexOf('x-www-form-urlencoded') !== -1) {
         result = false;
       } else {
