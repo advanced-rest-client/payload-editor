@@ -1,3 +1,13 @@
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/advanced-rest-client/payload-editor/compare/0.3.2...0.3.3) (2018-02-25)
+
+
+### Update
+
+* Bug fixes ([c5f5b8cb4be322b2764cbc8940c9d504229e2b7f](https://github.com/advanced-rest-client/payload-editor/commit/c5f5b8cb4be322b2764cbc8940c9d504229e2b7f))
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/advanced-rest-client/payload-editor/compare/0.3.1...0.3.2) (2018-02-18)
 

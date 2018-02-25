@@ -12,7 +12,6 @@ License for the specific language governing permissions and limitations under
 the License.
 -->
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../events-target-behavior/events-target-behavior.html">
 <link rel="import" href="../raw-payload-editor/raw-payload-editor.html">
 <link rel="import" href="../form-data-editor/form-data-editor.html">
 <link rel="import" href="../multipart-payload-editor/multipart-payload-editor.html">
@@ -89,7 +88,7 @@ Custom property | Description | Default
     }
     </style>
     <section class="panel-options">
-      <content-type-selector>
+      <content-type-selector content-type="{{contentType}}">
         <paper-item data-type="application/octet-stream">Any file data</paper-item>
       </content-type-selector>
       <paper-dropdown-menu class="type" label="Editor view" hidden$="[[editorSelectorHidden]]">
@@ -111,7 +110,6 @@ Custom property | Description | Default
   <script>
   Polymer({
     is: 'payload-editor',
-    behaviors: [ArcBehaviors.EventsTargetBehavior],
     properties: {
       /**
        * A HTTP body.
@@ -164,7 +162,13 @@ Custom property | Description | Default
        * A JavaScript representation of RAML data type object.
        * It will be passed to the editors that support RAML types.
        */
-      ramlType: Object
+      ramlType: Object,
+      /**
+       * Events handlers target. By default the element listens on
+       * `window` object. If set, all events listeners will be attached to this
+       * object instead of `window`.
+       */
+      eventsTarget: Object,
     },
 
     observers: [
@@ -173,14 +177,6 @@ Custom property | Description | Default
 
     listeners: {
       keydown: '_payloadKeyDown'
-    },
-
-    _attachListeners: function(node) {
-      this.listen(node, 'content-type-changed', '_contentTypeHandler');
-    },
-
-    _detachListeners: function(node) {
-      this.unlisten(node, 'content-type-changed', '_contentTypeHandler');
     },
 
     _hideAllInputsOptions: function() {
@@ -232,28 +228,6 @@ Custom property | Description | Default
       this.noTextInput = false;
       this.openedEditor = 0;
     },
-
-    /**
-     * If the event comes from different source then this element then it will
-     * update `content-type` value.
-     */
-    _contentTypeHandler: function(e) {
-      if (e.defaultPrevented) {
-        return;
-      }
-      var event = Polymer.dom(e);
-      if (event.rootTarget === this) {
-        return;
-      }
-      var ct = e.detail.value;
-      if (ct !== this.contentType) {
-        this.set('contentType', ct);
-        if (this.value === undefined) {
-          this._contentTypeChanged(ct);
-        }
-      }
-    },
-
     // Called when editor changed. Set's a content type if needed.
     _editorChanged: function(selection) {
       var tabName;
